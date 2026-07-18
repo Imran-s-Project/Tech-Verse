@@ -1,0 +1,17 @@
+# ══════════════════════════════════════
+#  .gitignore — Tech Verse Editor
+#  These files should not go to GitHub
+# ══════════════════════════════════════
+
+# 🔒 Firebase Secret Config — never push this!
+config/firebase-config.js
+
+# Node
+node_modules/
+.env
+.env.local
+.env.production
+
+# OS Files
+.DS_Store
+Thumbs.db
