@@ -22,10 +22,11 @@ const TEAM_MEMBERS = [
     ],
     links: [
       { icon: 'fa-brands fa-facebook',  label: 'Facebook',  url: 'https://facebook.com/imran.ahmedddddd' },
-      { icon: 'fa-brands fa-github',    label: 'GitHub',    url: 'https://github.com/imranahmed-dev-tech' },
+      { icon: 'fa-brands fa-github',    label: 'GitHub',    url: 'https://github.com/Imran-s-Project' },
+      { icon: 'fa-brands fa-github',    label: 'GitHub',    url: 'https://github.com/imran-ahmedd' },
       { icon: 'fa-brands fa-instagram', label: 'Instagram', url: 'https://instagram.com/Imran.ahmedddddd' },
       { icon: 'fa-brands fa-whatsapp',  label: 'WhatsApp',  url: 'https://wa.me/8801957329211' },
-      { icon: 'fa-solid fa-envelope',   label: 'Email',     url: 'mailto:imran.info.me@gmail.com' },
+      { icon: 'fa-solid fa-envelope',   label: 'Email',     url: 'mailto:project.developer.tech@gmail.com' },
     ],
   },
 ];
