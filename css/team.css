@@ -1,0 +1,227 @@
+/* ══════════════════════════════════════
+   css/team.css — About / Team Premium Card
+   Features: animated gradient border, 3D tilt-ready structure,
+   skill chips, stats counters, status/verified badges.
+══════════════════════════════════════ */
+
+/* Extra fonts for this section only — self-contained, no index.html edit needed */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Space+Grotesk:wght@600;700&family=Lora:ital,wght@1,400;1,500&display=swap');
+
+/* Enables smooth animation of the conic-gradient angle below */
+@property --border-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.team-grid {
+  display: flex; flex-direction: column; gap: 16px;
+  padding: 4px 0 6px;
+}
+
+/* ── Card shell: perspective for both tilt + flip ── */
+.team-card {
+  perspective: 1300px;
+  height: 430px;
+  cursor: pointer;
+  opacity: 0; transform: translateY(14px);
+  animation: teamCardIn 0.5s cubic-bezier(0.4,0,0.2,1) forwards;
+  animation-play-state: paused;
+}
+.team-grid.in-view .team-card { animation-play-state: running; }
+@keyframes teamCardIn { to { opacity: 1; transform: translateY(0); } }
+
+/* Tilt layer — JS sets rotateX/rotateY here on mousemove */
+.team-card-tilt {
+  width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out;
+  will-change: transform;
+}
+
+/* Flip layer — toggled by .team-card.flipped */
+.team-card-inner {
+  position: relative; width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+.team-card.flipped .team-card-inner { transform: rotateY(180deg); }
+
+/* ── Face = animated gradient-border shell ── */
+.team-face {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  border-radius: 18px;
+  padding: 2px; /* thickness of the glowing border */
+  --border-angle: 0deg;
+  background: conic-gradient(from var(--border-angle),
+    var(--primary), var(--accent), var(--success), var(--primary));
+  animation: spinBorder 5s linear infinite;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+}
+.team-face-back { transform: rotateY(180deg); }
+@keyframes spinBorder { to { --border-angle: 360deg; } }
+
+/* Actual visible content sits inset by the border thickness */
+.team-face-content {
+  position: relative; width: 100%; height: 100%;
+  border-radius: 16px; overflow: hidden;
+  background: linear-gradient(165deg, var(--bg-surface-light), var(--bg-surface));
+  display: flex; flex-direction: column;
+}
+
+/* ── Front ── */
+.team-face-front .team-face-content {
+  align-items: center; text-align: center;
+  gap: 6px; padding: 18px 16px;
+}
+
+.team-status {
+  font-family: var(--font-code);
+  align-self: flex-start;
+  display: flex; align-items: center; gap: 6px;
+  font-size: 9.5px; font-weight: 500; letter-spacing: 0.02em; color: var(--success);
+  background: rgba(16,201,143,0.12);
+  padding: 4px 9px; border-radius: 20px;
+  margin-bottom: 6px;
+}
+.status-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 0 rgba(16,201,143,0.6);
+  animation: statusPulse 1.8s ease-out infinite;
+}
+@keyframes statusPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(16,201,143,0.55); }
+  70%  { box-shadow: 0 0 0 6px rgba(16,201,143,0); }
+  100% { box-shadow: 0 0 0 0 rgba(16,201,143,0); }
+}
+
+.team-photo-wrap {
+  width: 84px; height: 84px; border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  margin-bottom: 4px;
+  position: relative;
+}
+.team-photo {
+  width: 100%; height: 100%; border-radius: 50%;
+  object-fit: cover; display: block;
+  border: 2px solid var(--bg-surface);
+}
+
+.team-name-row {
+  display: flex; align-items: center; gap: 6px;
+}
+.team-name {
+  font-family: 'Sora', 'Inter', sans-serif;
+  font-size: 16px; font-weight: 700; letter-spacing: -0.01em;
+  color: var(--text-main);
+}
+.team-verified {
+  font-size: 13px; color: var(--primary);
+}
+.team-role {
+  font-family: var(--font-code);
+  font-size: 10.5px; color: var(--primary); font-weight: 500;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  background: var(--primary-glow); padding: 3px 10px; border-radius: 20px;
+  margin-top: 1px; margin-bottom: 4px;
+}
+
+.team-skills {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 5px;
+  padding: 2px 0 4px;
+}
+.skill-chip {
+  font-family: var(--font-code);
+  font-size: 9.5px; font-weight: 500; color: var(--text-muted);
+  background: var(--bg-surface-hover);
+  border: 1px solid var(--border-light);
+  padding: 3px 8px; border-radius: 20px;
+  white-space: nowrap;
+}
+
+.team-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  width: 100%; gap: 4px;
+  padding: 10px 0; margin-top: 2px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.stat-item { display: flex; flex-direction: column; align-items: center; }
+.stat-value {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 16px; font-weight: 700; color: var(--text-main);
+  font-variant-numeric: tabular-nums;
+}
+.stat-label {
+  font-family: var(--font-code);
+  font-size: 8.5px; color: var(--text-dim); text-transform: uppercase;
+  letter-spacing: 0.04em; margin-top: 2px; text-align: center;
+}
+
+.team-flip-hint {
+  font-family: var(--font-code);
+  margin-top: auto; padding-top: 10px;
+  font-size: 9.5px; color: var(--text-dim); letter-spacing: 0.02em;
+  display: flex; align-items: center; gap: 5px;
+}
+
+/* Cursor-following shine highlight (driven by JS on mousemove) */
+.team-glare {
+  position: absolute; inset: 0; pointer-events: none;
+  border-radius: 16px;
+  background: transparent;
+  transition: background 0.1s ease-out;
+}
+
+/* ── Back ── */
+.team-face-back .team-face-content { padding: 16px; }
+.team-back-top {
+  display: flex; align-items: center; gap: 10px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--border);
+}
+.team-photo-mini {
+  width: 42px; height: 42px; border-radius: 50%;
+  object-fit: cover; border: 2px solid var(--primary);
+  flex-shrink: 0;
+}
+.team-name-mini {
+  font-family: 'Sora', 'Inter', sans-serif;
+  font-size: 13.5px; font-weight: 700; color: var(--text-main);
+  display:flex; align-items:center; gap:5px;
+}
+.team-verified-mini { font-size: 11px; color: var(--primary); }
+.team-role-mini {
+  font-family: var(--font-code);
+  font-size: 10.5px; color: var(--text-muted); letter-spacing: 0.03em;
+}
+
+.team-bio {
+  font-family: 'Lora', Georgia, serif; font-style: italic;
+  font-size: 12.5px; line-height: 1.65; color: var(--text-muted);
+  padding: 12px 0; flex: 1; overflow-y: auto;
+}
+
+.team-links {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  padding-top: 10px; border-top: 1px solid var(--border);
+}
+.team-link-btn {
+  width: 34px; height: 34px; border-radius: 10px;
+  background: var(--bg-surface-hover); color: var(--text-muted);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; text-decoration: none;
+  transition: var(--transition);
+}
+.team-link-btn:hover { background: var(--primary); color: #fff; transform: translateY(-2px); }
+
+.team-face-back .team-flip-hint { padding-top: 10px; justify-content: center; }
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  .team-face { animation: none; }
+  .status-dot { animation: none; }
+  .team-card { animation: none; opacity: 1; transform: none; }
+}
